@@ -38,20 +38,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.tvTitulo.setText(n.getTitulo());
         holder.tvFecha.setText(n.getFecha());
         holder.tvDesc.setText(n.getDescripcion());
-        //personViewHolder.personPhoto.setImageResource(persons.get(i).photoId);
+        holder.tvFuente.setText(n.getFuente());
         holder.noticiaAux = n;
 
 
-        if (!n.seEstaDescargando){
+        if (n.getFotos() == null && !n.seEstaDescargando){
             MyHilo hilo2 = new MyHilo(this.miapp.handler,n.getFoto(),this.miapp.IMAGEN, position);
             hilo2.start();
             n.seEstaDescargando = Boolean.TRUE;
-            //MyHilo hilo2 = new MyHilo(this.miapp.handler,n.getFoto(),this.miapp.IMAGEN, position);
-            //hilo2.start();
-            //n.seEstaDescargando = Boolean.TRUE;
         } else {
-            //Bitmap bitmap = BitmapFactory.decodeByteArray(p.getImagenes(), 0, n.getImagenes().length);
-            //holder.foto.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(n.getFotos(), 0, n.getFotos().length);
+            holder.foto.setImageBitmap(bitmap);
+
         }
 
     }

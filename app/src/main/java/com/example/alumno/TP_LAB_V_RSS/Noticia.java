@@ -1,5 +1,7 @@
 package com.example.alumno.TP_LAB_V_RSS;
 
+import android.util.Log;
+
 public class Noticia {
 
     private String fuente;
@@ -7,6 +9,7 @@ public class Noticia {
     private String fecha;
     private String descripcion;
     private String foto;
+    private byte[] fotos;
     public Boolean seEstaDescargando = Boolean.FALSE;
 
     public Noticia() {
@@ -43,7 +46,9 @@ public class Noticia {
     }
 
     public void setFecha(String fecha) {
-        this.fecha = fecha;
+        int index = fecha.indexOf("-");
+        String s =  fecha.substring(0,index);
+        this.fecha = s;
     }
 
     public String getDescripcion() {
@@ -60,6 +65,14 @@ public class Noticia {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public byte[] getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(byte[] fotos) {
+        this.fotos = fotos;
     }
 
     @Override

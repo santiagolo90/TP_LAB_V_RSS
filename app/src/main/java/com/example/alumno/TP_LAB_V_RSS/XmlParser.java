@@ -1,4 +1,5 @@
 package com.example.alumno.TP_LAB_V_RSS;
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -6,7 +7,10 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class XmlParser {
@@ -38,8 +42,9 @@ public class XmlParser {
 
                     if ("pubDate".equals(xmlPullParser.getName())&& n != null){
                         n.setFecha(xmlPullParser.nextText());
+
                     }
-                    if ("dc:creator".equals(xmlPullParser.getName())&& n != null){
+                    if ("creator".equals(xmlPullParser.getName())&& n != null){
                         n.setFuente(xmlPullParser.nextText());
                     }
                 }

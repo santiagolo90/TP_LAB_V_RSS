@@ -27,9 +27,10 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         this.tvTitulo = (TextView)itemView.findViewById(R.id.tvTitulo);
         this.tvFecha = (TextView)itemView.findViewById(R.id.tvFecha);
         this.tvDesc = (TextView)itemView.findViewById(R.id.tvDesc);
+        this.tvFuente = (TextView)itemView.findViewById(R.id.tvFuente);
         this.foto = (ImageView)itemView.findViewById(R.id.imagenrss);
 
-        itemView.setOnClickListener(this);
+        this.foto.setOnClickListener(this);
     }
 
     @Override

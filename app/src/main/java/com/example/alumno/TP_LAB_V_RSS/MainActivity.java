@@ -62,11 +62,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
             this.noticias.addAll((List<Noticia>)msg.obj);
             this.myAdapter.notifyDataSetChanged();
         }else if(msg.arg1  == MainActivity.IMAGEN){
-            //Log.d("desde el hilo",msg.obj.toString());
+
             //Log.d("desde el hilo imagen",msg.obj.toString());
 
-            //this.personas.get(msg.arg2).setImagenes((byte[])msg.obj);
-            //this.myAdapter.notifyItemChanged(msg.arg2);
+            this.noticias.get(msg.arg2).setFotos((byte[])msg.obj);
+            this.myAdapter.notifyItemChanged(msg.arg2);
             /*ImageView imagen =(ImageView) super.findViewById(R.id.imagenTest);
             Bitmap bitmap = BitmapFactory.decodeByteArray((byte[])msg.obj, 0, ((byte[])msg.obj).length);
             imagen.setImageBitmap(bitmap);*/

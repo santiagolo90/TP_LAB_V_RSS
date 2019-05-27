@@ -34,12 +34,11 @@ public class MyHilo extends Thread {
         if (this.tipo == MainActivity.TEXTO){
             String respues = myConeccion.conectarseString(url);
             mensaje.obj = XmlParser.obtenerNoticias(respues);
-        }/*else if(this.tipo == MainActivity.IMAGEN){
+        }else if(this.tipo == MainActivity.IMAGEN) {
             byte[] respues = myConeccion.conectarseImagen(url);
             mensaje.obj = respues;
-            Log.d("URL_FOTO",mensaje.obj.toString());
             mensaje.arg2 = currentIndex;
-        }*/
+        }
         this.handler.sendMessage(mensaje);
     }
 
