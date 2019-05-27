@@ -27,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rss_recyclerview,parent,false);
-        MyViewHolder mv = new MyViewHolder(v);
+        MyViewHolder mv = new MyViewHolder(v,this.miapp);
         return mv;
     }
 
@@ -39,6 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.tvFecha.setText(n.getFecha());
         holder.tvDesc.setText(n.getDescripcion());
         holder.tvFuente.setText(n.getFuente());
+        holder.setLink(n.getLink());
         holder.noticiaAux = n;
 
 

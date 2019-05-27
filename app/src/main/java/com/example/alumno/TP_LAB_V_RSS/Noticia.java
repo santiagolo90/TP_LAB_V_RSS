@@ -8,6 +8,7 @@ public class Noticia {
     private String titulo;
     private String fecha;
     private String descripcion;
+    private String link;
     private String foto;
     private byte[] fotos;
     public Boolean seEstaDescargando = Boolean.FALSE;
@@ -46,8 +47,8 @@ public class Noticia {
     }
 
     public void setFecha(String fecha) {
-        int index = fecha.indexOf("-");
-        String s =  fecha.substring(0,index);
+        int index = fecha.indexOf(":");
+        String s =  fecha.substring(0,index -2);
         this.fecha = s;
     }
 
@@ -73,6 +74,14 @@ public class Noticia {
 
     public void setFotos(byte[] fotos) {
         this.fotos = fotos;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     @Override
