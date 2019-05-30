@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +25,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
     public static final int TEXTO = 1;
     public static final int IMAGEN = 2;
 
+    public String rss = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         noticias = new ArrayList<Noticia>();
-        //noticias.add(new Noticia("RT","Notica RT","24/05/2019","esto es la discripcion","https://onemoretry.eu/assets/fotos/carrusel/20190514_151257.jpg"));
-        //noticias.add(new Noticia("Pagina 12","Pagina 12","24/05/2019","esto es la discripcion","https://onemoretry.eu/assets/fotos/carrusel/20190514_190037.jpg"));
-        //noticias.add(new Noticia("Clarin","Clarin","24/05/2019","esto es la discripcion","https://onemoretry.eu/assets/fotos/carrusel/20190226_111412.jpg"));
         RecyclerView rvNoticias = (RecyclerView) super.findViewById(R.id.listaNoticias);
 
         myAdapter = new MyAdapter(noticias , this);
@@ -41,36 +42,29 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
         rvNoticias.setAdapter(myAdapter);
         rvNoticias.setLayoutManager(lm);
 
-
-
-        this.handler = new Handler(this);
-        //MyHilo hiloUno = new MyHilo(handler,"https://actualidad.rt.com/feeds/all.rss",TEXTO);
-        //hiloUno.start();
-
         // Obtener el refreshLayout
         refresh = (SwipeRefreshLayout)findViewById(R.id.swipeRV);
-
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
-                MyHilo hiloUno = new MyHilo(handler,"https://www.clarin.com/rss/mundo/",TEXTO);
-                hiloUno.start();
+                ejecutarHilo(TEXTO);
             }
         });
 
-        MyHilo hiloDos = new MyHilo(handler,"https://www.pagina12.com.ar/rss/portada",TEXTO);
-        hiloDos.start();
+        this.rss = "https://www.pagina12.com.ar/rss/portada";
+        ejecutarHilo(TEXTO);
 
     }
+
+
 
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.arg1 == MainActivity.TEXTO){
             this.noticias.clear();
-            for (Noticia n: (List<Noticia>)msg.obj){
-                Log.d("desde el hilo texto",n.toString());
-            }
+            //for (Noticia n: (List<Noticia>)msg.obj){
+                //Log.d("desde el hilo texto",n.toString());
+            //}
 
 
             this.noticias.addAll((List<Noticia>)msg.obj);
@@ -91,5 +85,36 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
         i.putExtra("link",link);
         //Log.d("Link",link);
         this.startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        refresh.setRefreshing(true);
+        int id = item.getItemId();
+        if (id == R.id.RssClarin) {
+            this.rss = "https://www.clarin.com/rss/mundo/";
+            ejecutarHilo(TEXTO);
+            return true;
+        }
+        if (id == R.id.RssRT) {
+            this.rss = "https://actualidad.rt.com/feeds/all.rss";
+            ejecutarHilo(TEXTO);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void ejecutarHilo(int tipo){
+        this.handler = new Handler(this);
+        MyHilo hiloUno = new MyHilo(handler,this.rss,tipo);
+        hiloUno.start();
+
     }
 }

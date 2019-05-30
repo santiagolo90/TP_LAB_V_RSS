@@ -3,6 +3,7 @@ package com.example.alumno.TP_LAB_V_RSS;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         Noticia n = this.noticias.get(position);
+
+        //Log.d("ZZ", n.toString());
         holder.tvTitulo.setText(n.getTitulo());
         holder.tvFecha.setText(n.getFecha());
         holder.tvDesc.setText(n.getDescripcion());

@@ -35,7 +35,7 @@ public class webNoticia extends AppCompatActivity {
     }
 
     public void WebAction(){
-
+        refresh.setRefreshing(true);
 
         webView = (WebView) findViewById(R.id.webView);
         //Permito JavaScript

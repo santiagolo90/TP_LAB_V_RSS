@@ -65,7 +65,12 @@ public class Noticia {
     }
 
     public void setFoto(String foto) {
-        this.foto = foto;
+        if ("".equals(foto)){
+        this.foto ="https://www.tattoow.com/src/themes/claue/assets/images/placeholder.png";
+        }else{
+            this.foto = foto;
+        }
+
     }
 
     public byte[] getFotos() {

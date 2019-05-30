@@ -33,12 +33,13 @@ public class XmlParser {
                     if ("title".equals(xmlPullParser.getName()) && n != null){
                         n.setTitulo(xmlPullParser.nextText());
                     }
-                    if ("description".equals(xmlPullParser.getName())&& n != null){
-                        n.setDescripcion(xmlPullParser.nextText());
-                    }
                     if ("link".equals(xmlPullParser.getName())&& n != null){
                         n.setLink(xmlPullParser.nextText());
                     }
+                    if ("description".equals(xmlPullParser.getName())&& n != null){
+                        n.setDescripcion(xmlPullParser.nextText());
+                    }
+
                     if ("enclosure".equals(xmlPullParser.getName())&& n != null){
                         n.setFoto(xmlPullParser.getAttributeValue(null,"url"));
                     }
