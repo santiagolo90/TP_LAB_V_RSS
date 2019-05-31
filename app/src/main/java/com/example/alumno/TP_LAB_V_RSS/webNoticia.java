@@ -1,10 +1,14 @@
 package com.example.alumno.TP_LAB_V_RSS;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -13,12 +17,20 @@ public class webNoticia extends AppCompatActivity {
     WebView webView;
     SwipeRefreshLayout refresh;
     private String link;
+    private String fuente;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_noticia);
         Intent i = getIntent();
         this.link = i.getStringExtra("link");
+        this.fuente = i.getStringExtra("fuente");
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(fuente);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2E2E2E")));
+
         refresh = (SwipeRefreshLayout)findViewById(R.id.swipe);
 
 
@@ -79,5 +91,17 @@ public class webNoticia extends AppCompatActivity {
         }else {
             finish();
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        refresh.setRefreshing(true);
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();;
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

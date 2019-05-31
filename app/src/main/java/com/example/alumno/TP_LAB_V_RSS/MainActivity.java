@@ -13,21 +13,27 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Handler.Callback ,SearchView.OnQueryTextListener, SearchView.OnCloseListener{
+public class MainActivity extends AppCompatActivity implements Handler.Callback {
 
     List<Noticia> OriNoticias;
     List<Noticia> noticias;
     MyAdapter myAdapter;
+    MenuListener ml;
     Handler handler;
     SwipeRefreshLayout refresh;
+    ImageView closeButton;
+    EditText etSearchBar;
+    SearchView sv;
+
     public static final int TEXTO = 1;
     public static final int IMAGEN = 2;
-
     public String rss = null;
 
     @Override
@@ -84,9 +90,10 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         return false;
     }
 
-    public void OpenActivity(String link){
+    public void OpenActivity(String link, String fuente){
         Intent i = new Intent(this,webNoticia.class);
         i.putExtra("link",link);
+        i.putExtra("fuente",fuente);
         //Log.d("Link",link);
         this.startActivity(i);
     }
@@ -95,12 +102,17 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem miMenu = menu.findItem(R.id.BtnBuscar);
+        this.ml = new MenuListener(this);
+        this.sv =(SearchView) miMenu.getActionView();
+        this.closeButton = (ImageView)sv.findViewById(R.id.search_close_btn);
+        this.etSearchBar= (EditText)sv.findViewById(R.id.search_src_text);
+        this.closeButton.setOnClickListener(ml);
 
-        SearchView sv =(SearchView) miMenu.getActionView();
-        sv.setOnQueryTextListener(this);
-        sv.setOnCloseListener(this);
+        this.sv.setOnQueryTextListener(ml);
+        this.sv.setOnCloseListener(ml);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -132,38 +144,5 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
 
-
-
-        Log.d("Text query: ",query);
-        List<Noticia> newList = new ArrayList<>();
-        Iterator<Noticia> it = this.OriNoticias.iterator();
-        Noticia n = null;
-        while (it.hasNext()) {
-            n = it.next();
-            if (n.getTitulo().contains(query)) {
-                newList.add(n);
-            }
-        }
-        this.noticias.clear();
-        this.noticias.addAll(newList);
-        this.myAdapter.notifyDataSetChanged();
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        Log.d("Text new: ",newText);
-        return false;
-    }
-
-    @Override
-    public boolean onClose() {
-        this.noticias.clear();
-        this.noticias.addAll(this.OriNoticias);
-        this.myAdapter.notifyDataSetChanged();
-        return false;
-    }
 }

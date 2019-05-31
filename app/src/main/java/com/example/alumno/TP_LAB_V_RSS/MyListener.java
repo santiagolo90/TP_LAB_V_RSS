@@ -20,11 +20,14 @@ public class MyListener implements View.OnClickListener {
             //Log.d("Click","Agrego");
             //Log.d("Click",this.holeder.getProductoBuscado().toString());
             String myLink = this.holeder.getLink();
+            String fuente = String.valueOf(this.holeder.tvFuente.getText());
             //this.holeder.getMiapp().OpenActivity(myLink);
 
 
             Intent i = new Intent(this.holeder.getMiapp(),webNoticia.class);
             i.putExtra("link",myLink);
+            i.putExtra("fuente",fuente);
+
             this.holeder.getMiapp().startActivity(i);
         }else{
             this.holeder.getMiapp().finish();
