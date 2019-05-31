@@ -62,7 +62,19 @@ public class Noticia {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        int inicio = descripcion.indexOf("<img");
+        int fin = descripcion.indexOf("/>");
+        // Carácter en la posición
+
+        if (inicio > -1 && fin > -1 ){
+            String descFiltrada = descripcion.substring(fin +2);
+            this.descripcion = descFiltrada;
+        }else{
+            this.descripcion = descripcion;
+        }
+
+
+
     }
 
     public String getFoto() {
