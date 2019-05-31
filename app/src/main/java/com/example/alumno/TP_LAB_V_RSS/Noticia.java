@@ -14,6 +14,11 @@ public class Noticia {
     public Boolean seEstaDescargando = Boolean.FALSE;
 
     public Noticia() {
+        this.fuente = "Sin fuente";
+        this.titulo = "Sin titulo";
+        this.fecha = "11/11/1111";
+        this.descripcion = "Sin descripcion";
+        //this.foto = "https://www.tattoow.com/src/themes/claue/assets/images/placeholder.png";
 
     }
 
@@ -65,11 +70,8 @@ public class Noticia {
     }
 
     public void setFoto(String foto) {
-        if ("".equals(foto)){
-        this.foto ="https://www.tattoow.com/src/themes/claue/assets/images/placeholder.png";
-        }else{
-            this.foto = foto;
-        }
+
+        this.foto = foto;
 
     }
 

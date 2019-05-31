@@ -9,15 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Handler.Callback{
+public class MainActivity extends AppCompatActivity implements Handler.Callback ,SearchView.OnQueryTextListener, SearchView.OnCloseListener{
 
+    List<Noticia> OriNoticias;
     List<Noticia> noticias;
     MyAdapter myAdapter;
     Handler handler;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
 
 
             this.noticias.addAll((List<Noticia>)msg.obj);
+            this.OriNoticias = new ArrayList<>(this.noticias);
             this.myAdapter.notifyDataSetChanged();
         }else if(msg.arg1  == MainActivity.IMAGEN){
             this.noticias.get(msg.arg2).setFotos((byte[])msg.obj);
@@ -90,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem miMenu = menu.findItem(R.id.BtnBuscar);
+
+        SearchView sv =(SearchView) miMenu.getActionView();
+        sv.setOnQueryTextListener(this);
+        sv.setOnCloseListener(this);
         return true;
     }
 
@@ -97,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
     public boolean onOptionsItemSelected(MenuItem item) {
         refresh.setRefreshing(true);
         int id = item.getItemId();
+        if (id == R.id.RssP12) {
+            this.rss = "https://www.pagina12.com.ar/rss/portada";
+            ejecutarHilo(TEXTO);
+            return true;
+        }
         if (id == R.id.RssClarin) {
             this.rss = "https://www.clarin.com/rss/mundo/";
             ejecutarHilo(TEXTO);
@@ -116,5 +130,40 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback{
         MyHilo hiloUno = new MyHilo(handler,this.rss,tipo);
         hiloUno.start();
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+
+
+        Log.d("Text query: ",query);
+        List<Noticia> newList = new ArrayList<>();
+        Iterator<Noticia> it = this.OriNoticias.iterator();
+        Noticia n = null;
+        while (it.hasNext()) {
+            n = it.next();
+            if (n.getTitulo().contains(query)) {
+                newList.add(n);
+            }
+        }
+        this.noticias.clear();
+        this.noticias.addAll(newList);
+        this.myAdapter.notifyDataSetChanged();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.d("Text new: ",newText);
+        return false;
+    }
+
+    @Override
+    public boolean onClose() {
+        this.noticias.clear();
+        this.noticias.addAll(this.OriNoticias);
+        this.myAdapter.notifyDataSetChanged();
+        return false;
     }
 }

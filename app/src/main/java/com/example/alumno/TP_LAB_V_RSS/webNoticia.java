@@ -26,6 +26,7 @@ public class webNoticia extends AppCompatActivity {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 WebAction();
             }
         });

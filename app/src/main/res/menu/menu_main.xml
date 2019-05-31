@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Buscar"
+        android:id="@+id/BtnBuscar"
+        android:orderInCategory="50"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/RssP12"
+        android:title="Pagina12"
+        android:orderInCategory="60"
+        app:showAsAction="never" />
     <item android:id="@+id/RssClarin"
         android:title="Clarin"
-        android:orderInCategory="100"
+        android:orderInCategory="70"
         app:showAsAction="never" />
     <item android:id="@+id/RssRT"
         android:title="RT noticias"
-        android:orderInCategory="101"
+        android:orderInCategory="80"
         app:showAsAction="never" />
 </menu>

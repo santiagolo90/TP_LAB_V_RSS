@@ -43,6 +43,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.tvDesc.setText(n.getDescripcion());
         holder.tvFuente.setText(n.getFuente());
         holder.setLink(n.getLink());
+        if (n.getFoto() == null || n.getFoto().isEmpty()){
+            holder.foto.setImageResource(R.drawable.nopic);
+        }
         holder.noticiaAux = n;
 
 
@@ -51,8 +54,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             hilo2.start();
             n.seEstaDescargando = Boolean.TRUE;
         } else {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(n.getFotos(), 0, n.getFotos().length);
-            holder.foto.setImageBitmap(bitmap);
+            if (n.getFotos() != null){
+                Bitmap bitmap = BitmapFactory.decodeByteArray(n.getFotos(), 0, n.getFotos().length);
+                holder.foto.setImageBitmap(bitmap);
+            }
+;
 
         }
 
