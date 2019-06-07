@@ -1,6 +1,11 @@
 package com.example.alumno.TP_LAB_V_RSS;
 
+import android.icu.text.SimpleDateFormat;
 import android.util.Log;
+
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 public class Noticia {
 
@@ -52,9 +57,20 @@ public class Noticia {
     }
 
     public void setFecha(String fecha) {
-        int index = fecha.indexOf(":");
-        String s =  fecha.substring(0,index -2);
-        this.fecha = s;
+        //int index = fecha.indexOf(":");
+        //String s =  fecha.substring(0,index -2);
+        //this.fecha = s;
+        String oldFecha ="Thu, 06 Jun 2019 22:46:01 GMT";
+        String source = fecha;
+        String[] sourceSplit= source.split(" ");
+
+        int dia= Integer.parseInt(sourceSplit[1]);
+        String mes= convertMonth(sourceSplit[2]);
+        int anio = Integer.parseInt(sourceSplit[3]);
+        String hora = sourceSplit[4];
+        String fechaFinal = String.valueOf(dia).concat("/").concat(mes).concat("/").concat(String.valueOf(anio)).concat(" ").concat(hora);
+
+        this.fecha = fechaFinal;
     }
 
     public String getDescripcion() {
@@ -112,5 +128,14 @@ public class Noticia {
                 ", descripcion='" + descripcion + '\'' +
                 ", foto='" + foto + '\'' +
                 '}';
+    }
+
+
+    public String convertMonth(String mm){
+        List<String> months = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        if (months.indexOf(mm)+1>9){
+            return String.valueOf(months.indexOf(mm)+1);
+        }
+        return "0"+String.valueOf(months.indexOf(mm)+1);
     }
 }

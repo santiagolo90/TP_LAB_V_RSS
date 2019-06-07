@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         this.rss = "https://www.pagina12.com.ar/rss/portada";
         ejecutarHilo(TEXTO);
 
+        //SelectRss rssDialog = new SelectRss();
+        //rssDialog.show(getSupportFragmentManager(),"dialogo");
     }
 
 
