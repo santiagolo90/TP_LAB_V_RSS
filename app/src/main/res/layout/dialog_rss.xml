@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="100dp"
+    >
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pagina 12"
+        android:id="@+id/CBP12"
+        android:buttonTint="@color/cardview_dark_background"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clarin"
+        android:id="@+id/CBClarin"
+        android:buttonTint="@color/cardview_dark_background"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RT Noticias"
+        android:id="@+id/CBRT"
+        android:buttonTint="@color/cardview_dark_background"/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="France24"
+        android:id="@+id/CBFr24"
+        android:buttonTint="@color/cardview_dark_background"/>
+
+
+
+
+
+
+
+</LinearLayout>

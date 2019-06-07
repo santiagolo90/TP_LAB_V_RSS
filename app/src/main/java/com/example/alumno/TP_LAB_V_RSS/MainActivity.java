@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
             }
         });
 
-        this.rss = "https://www.pagina12.com.ar/rss/portada";
+        //this.rss = "https://www.france24.com/es/rss";
+        this.rss = "http://ep00.epimg.net/rss/elpais/portada.xml";
         ejecutarHilo(TEXTO);
 
-        //SelectRss rssDialog = new SelectRss();
-        //rssDialog.show(getSupportFragmentManager(),"dialogo");
+
     }
 
 
@@ -120,6 +120,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     public boolean onOptionsItemSelected(MenuItem item) {
         refresh.setRefreshing(true);
         int id = item.getItemId();
+        if (id == R.id.RssMenu) {
+            SelectRss rssDialog = new SelectRss();
+            rssDialog.show(getSupportFragmentManager(),"dialogo");
+            //this.rss = "https://www.pagina12.com.ar/rss/portada";
+            //ejecutarHilo(TEXTO);
+            refresh.setRefreshing(false);
+            return true;
+        }
         if (id == R.id.RssP12) {
             this.rss = "https://www.pagina12.com.ar/rss/portada";
             ejecutarHilo(TEXTO);

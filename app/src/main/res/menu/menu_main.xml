@@ -8,6 +8,11 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/RssMenu"
+        android:title="Selecionar RSS"
+        android:orderInCategory="60"
+        app:showAsAction="never" />
+
     <item android:id="@+id/RssP12"
         android:title="Pagina12"
         android:orderInCategory="60"
