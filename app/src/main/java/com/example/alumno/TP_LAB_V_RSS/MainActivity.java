@@ -1,6 +1,8 @@
 package com.example.alumno.TP_LAB_V_RSS;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
@@ -16,9 +18,12 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements Handler.Callback {
 
@@ -36,10 +41,23 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     public static final int IMAGEN = 2;
     public String rss = null;
 
+    SelectRss rssDialog;
+    public static final String  PAGINA12 = "https://www.pagina12.com.ar/rss/portada";
+    public static final String  CLARIN = "https://www.clarin.com/rss/mundo/";
+    public static final String  RT = "https://actualidad.rt.com/feeds/all.rss";
+    public static final String  ELPAIS = "http://ep00.epimg.net/rss/elpais/portada.xml";
+    public static final String  FRANCE24 = "https://www.france24.com/es/rss";
+
+    private List<String>  rssGuardados;
+
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.preferences = getSharedPreferences("configuracion", Context.MODE_PRIVATE);
+        this.rssDialog = new SelectRss(this);
 
         noticias = new ArrayList<Noticia>();
         RecyclerView rvNoticias = (RecyclerView) super.findViewById(R.id.listaNoticias);
@@ -61,9 +79,11 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         });
 
         //this.rss = "https://www.france24.com/es/rss";
-        this.rss = "http://ep00.epimg.net/rss/elpais/portada.xml";
+        this.rss = FRANCE24;
         ejecutarHilo(TEXTO);
 
+        this.rssGuardados = traerPreferencias();
+        cargarNoticas();
 
     }
 
@@ -72,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.arg1 == MainActivity.TEXTO){
-            this.noticias.clear();
+            //this.noticias.clear();
             //for (Noticia n: (List<Noticia>)msg.obj){
                 //Log.d("desde el hilo texto",n.toString());
             //}
@@ -121,25 +141,23 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         refresh.setRefreshing(true);
         int id = item.getItemId();
         if (id == R.id.RssMenu) {
-            SelectRss rssDialog = new SelectRss();
-            rssDialog.show(getSupportFragmentManager(),"dialogo");
-            //this.rss = "https://www.pagina12.com.ar/rss/portada";
-            //ejecutarHilo(TEXTO);
+
+            this.rssDialog.show(getSupportFragmentManager(),"dialogo");
             refresh.setRefreshing(false);
             return true;
         }
         if (id == R.id.RssP12) {
-            this.rss = "https://www.pagina12.com.ar/rss/portada";
+            this.rss = PAGINA12;
             ejecutarHilo(TEXTO);
             return true;
         }
         if (id == R.id.RssClarin) {
-            this.rss = "https://www.clarin.com/rss/mundo/";
+            this.rss = CLARIN;
             ejecutarHilo(TEXTO);
             return true;
         }
         if (id == R.id.RssRT) {
-            this.rss = "https://actualidad.rt.com/feeds/all.rss";
+            this.rss = RT;
             ejecutarHilo(TEXTO);
             return true;
         }
@@ -152,6 +170,49 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         MyHilo hiloUno = new MyHilo(handler,this.rss,tipo);
         hiloUno.start();
 
+    }
+    public void ejecutarHiloURL(int tipo,String url){
+        this.handler = new Handler(this);
+        MyHilo hiloUno = new MyHilo(handler,url,tipo);
+        hiloUno.start();
+
+    }
+
+
+    public List<String> traerPreferencias() {
+        Set<String> defaultValue = new HashSet<>();
+        defaultValue.add(RT);
+        Set<String> preferencesValues = this.preferences.getStringSet("configuracion", defaultValue);
+        List<String> listaURL = new ArrayList<>();
+        for (String url : preferencesValues) {
+            listaURL.add(url);
+            listaURL.add(CLARIN);
+        }
+        return listaURL;
+    }
+
+    public void guardarPreferencias(List<String> url) {
+        SharedPreferences.Editor edit = this.preferences.edit();
+        Set<String> urls = new HashSet<>();
+        for (String s : url) {
+            urls.add(s);
+        }
+        edit.putStringSet("configuracion", urls);
+        edit.commit();
+        this.cargarNoticas();
+    }
+
+    public void cargarNoticas() {
+        this.noticias.clear();
+        //this.OriNoticias.clear();
+        //this.myAdapter.notifyDataSetChanged();
+        for (String url : this.rssGuardados) {
+
+            this.rss = url;
+            Log.d("LISTA",this.rss );
+            ejecutarHilo(TEXTO);
+        }
+        this.myAdapter.notifyDataSetChanged();
     }
 
 
