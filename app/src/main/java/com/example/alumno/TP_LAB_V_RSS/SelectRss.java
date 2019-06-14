@@ -16,8 +16,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.alumno.TP_LAB_V_RSS.enumerador.Eurl;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 public class SelectRss extends DialogFragment {
@@ -26,7 +29,7 @@ public class SelectRss extends DialogFragment {
     CheckBox rtNoticias;
     CheckBox clarin;
     CheckBox france24;
-    SharedPreferences prefereces;
+    List<Eurl> prefereces;
     List<CheckBox> listaCheckBox;
 
     public MainActivity activity;
@@ -35,7 +38,6 @@ public class SelectRss extends DialogFragment {
 
     @SuppressLint("ValidFragment")
     public SelectRss(MainActivity activity){
-
         this.activity = activity;
     }
 
@@ -43,19 +45,18 @@ public class SelectRss extends DialogFragment {
     public Dialog onCreateDialog(Bundle bundle){
         LayoutInflater inflater = LayoutInflater.from(this.getContext());
         View v = inflater.inflate(R.layout.dialog_rss,null);
+        View li = v.findViewById(R.id.liRSS);
+        this.prefereces = this.activity.traerPreferencias();
+        this.listaCheckBox = new ArrayList<>();
+        for(View vi: li.getTouchables()){
+            CheckBox cb = (CheckBox) vi;
+            if (this.prefereces.contains(Eurl.valueOf(cb.getTag().toString()))){
+                cb.setChecked(true);
 
-        this.pagina12 = (CheckBox) v.findViewById(R.id.CBP12);
-        this.rtNoticias = (CheckBox) v.findViewById(R.id.CBRT);
-        this.clarin = (CheckBox) v.findViewById(R.id.CBClarin);
-        this.france24 = (CheckBox) v.findViewById(R.id.CBFr24);
-        List<CheckBox> listaCheckBox = new ArrayList<>();
+            }
+            listaCheckBox.add(cb);
 
-        this.prefereces = this.activity.getSharedPreferences("catalogo", Context.MODE_MULTI_PROCESS);
-
-        pagina12.setChecked(this.prefereces.getBoolean((String)pagina12.getText(),false));
-        rtNoticias.setChecked(this.prefereces.getBoolean((String)rtNoticias.getText(),false));
-        clarin.setChecked(this.prefereces.getBoolean((String)clarin.getText(),false));
-        france24.setChecked(this.prefereces.getBoolean((String)france24.getText(),false));
+        }
 
 
 
@@ -71,11 +72,12 @@ public class SelectRss extends DialogFragment {
         b.setCustomTitle(titulo);
         //b.setMessage("Mensaje");
         b.setView(v);
-        DSRListener drsListener = new DSRListener();
+        DSRListener drsListener = new DSRListener(this.activity,this.listaCheckBox);
 
         b.setNegativeButton("Cerrar",drsListener);
         b.setPositiveButton("Aceptar",drsListener);
         return b.create();
     }
+
 
 }

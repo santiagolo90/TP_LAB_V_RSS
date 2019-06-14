@@ -13,16 +13,4 @@
         android:orderInCategory="60"
         app:showAsAction="never" />
 
-    <item android:id="@+id/RssP12"
-        android:title="Pagina12"
-        android:orderInCategory="60"
-        app:showAsAction="never" />
-    <item android:id="@+id/RssClarin"
-        android:title="Clarin"
-        android:orderInCategory="70"
-        app:showAsAction="never" />
-    <item android:id="@+id/RssRT"
-        android:title="RT noticias"
-        android:orderInCategory="80"
-        app:showAsAction="never" />
 </menu>

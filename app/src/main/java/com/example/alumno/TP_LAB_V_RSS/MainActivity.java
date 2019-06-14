@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.alumno.TP_LAB_V_RSS.enumerador.Eurl;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,13 +44,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     public String rss = null;
 
     SelectRss rssDialog;
+    /*
     public static final String  PAGINA12 = "https://www.pagina12.com.ar/rss/portada";
     public static final String  CLARIN = "https://www.clarin.com/rss/mundo/";
     public static final String  RT = "https://actualidad.rt.com/feeds/all.rss";
     public static final String  ELPAIS = "http://ep00.epimg.net/rss/elpais/portada.xml";
     public static final String  FRANCE24 = "https://www.france24.com/es/rss";
-
-    private List<String>  rssGuardados;
+*/
+    private List<Eurl>  rssGuardados;
 
     private SharedPreferences preferences;
     @Override
@@ -79,8 +82,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         });
 
         //this.rss = "https://www.france24.com/es/rss";
-        this.rss = FRANCE24;
-        ejecutarHilo(TEXTO);
+
 
         this.rssGuardados = traerPreferencias();
         cargarNoticas();
@@ -96,8 +98,6 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
             //for (Noticia n: (List<Noticia>)msg.obj){
                 //Log.d("desde el hilo texto",n.toString());
             //}
-
-
             this.noticias.addAll((List<Noticia>)msg.obj);
             this.OriNoticias = new ArrayList<>(this.noticias);
             this.myAdapter.notifyDataSetChanged();
@@ -146,21 +146,6 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
             refresh.setRefreshing(false);
             return true;
         }
-        if (id == R.id.RssP12) {
-            this.rss = PAGINA12;
-            ejecutarHilo(TEXTO);
-            return true;
-        }
-        if (id == R.id.RssClarin) {
-            this.rss = CLARIN;
-            ejecutarHilo(TEXTO);
-            return true;
-        }
-        if (id == R.id.RssRT) {
-            this.rss = RT;
-            ejecutarHilo(TEXTO);
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -171,34 +156,27 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         hiloUno.start();
 
     }
-    public void ejecutarHiloURL(int tipo,String url){
-        this.handler = new Handler(this);
-        MyHilo hiloUno = new MyHilo(handler,url,tipo);
-        hiloUno.start();
 
-    }
-
-
-    public List<String> traerPreferencias() {
+    public List<Eurl> traerPreferencias() {
         Set<String> defaultValue = new HashSet<>();
-        defaultValue.add(RT);
+        defaultValue.add(Eurl.FRANCE24.name());
         Set<String> preferencesValues = this.preferences.getStringSet("configuracion", defaultValue);
-        List<String> listaURL = new ArrayList<>();
+        List<Eurl> listaURL = new ArrayList<>();
         for (String url : preferencesValues) {
-            listaURL.add(url);
-            listaURL.add(CLARIN);
+            listaURL.add(Eurl.valueOf(url));
         }
         return listaURL;
     }
 
-    public void guardarPreferencias(List<String> url) {
+    public void guardarPreferencias(List<Eurl> eurl) {
         SharedPreferences.Editor edit = this.preferences.edit();
         Set<String> urls = new HashSet<>();
-        for (String s : url) {
-            urls.add(s);
+        for (Eurl s : eurl) {
+            urls.add(s.name());
         }
         edit.putStringSet("configuracion", urls);
         edit.commit();
+        this.rssGuardados = traerPreferencias();
         this.cargarNoticas();
     }
 
@@ -206,10 +184,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         this.noticias.clear();
         //this.OriNoticias.clear();
         //this.myAdapter.notifyDataSetChanged();
-        for (String url : this.rssGuardados) {
+        for (Eurl url : this.rssGuardados) {
 
-            this.rss = url;
-            Log.d("LISTA",this.rss );
+            this.rss = url.url;
             ejecutarHilo(TEXTO);
         }
         this.myAdapter.notifyDataSetChanged();

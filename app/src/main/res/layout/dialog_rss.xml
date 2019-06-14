@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/liRSS"
     android:paddingLeft="100dp"
     >
 
@@ -11,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pagina 12"
+        android:tag="PAGINA12"
         android:id="@+id/CBP12"
         android:buttonTint="@color/cardview_dark_background"/>
 
@@ -18,18 +20,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clarin"
+        android:tag="CLARIN"
         android:id="@+id/CBClarin"
         android:buttonTint="@color/cardview_dark_background"/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RT Noticias"
+        android:tag="RT"
         android:id="@+id/CBRT"
         android:buttonTint="@color/cardview_dark_background"/>
+
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="France24"
+        android:tag="FRANCE24"
         android:id="@+id/CBFr24"
         android:buttonTint="@color/cardview_dark_background"/>
 
