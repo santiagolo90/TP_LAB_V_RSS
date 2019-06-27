@@ -50,7 +50,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
 
         if (n.getFotos() == null && !n.seEstaDescargando){
-            MyHilo hilo2 = new MyHilo(this.miapp.handler,n.getFoto(),this.miapp.IMAGEN, position);
+            MyHilo hilo2 = new MyHilo(this.miapp.handler,n.getFoto(),this.miapp.IMAGEN,n.getFuente(), position);
             hilo2.start();
             n.seEstaDescargando = Boolean.TRUE;
         } else {

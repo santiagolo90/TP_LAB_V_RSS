@@ -16,5 +16,9 @@ public enum Eurl {
         this.url = url;
     }
 
+    public static String getNombre(Eurl e){
+        return e.name();
+    }
+
 
 }

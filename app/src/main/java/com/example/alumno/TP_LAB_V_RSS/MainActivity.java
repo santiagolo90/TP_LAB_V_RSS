@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ejecutarHilo(TEXTO);
+                //ejecutarHilo(TEXTO);
+                cargarNoticas();
             }
         });
 
@@ -150,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     }
 
 
-    public void ejecutarHilo(int tipo){
+    public void ejecutarHilo(int tipo,String fuente){
         this.handler = new Handler(this);
-        MyHilo hiloUno = new MyHilo(handler,this.rss,tipo);
+        MyHilo hiloUno = new MyHilo(handler,this.rss,tipo ,fuente);
         hiloUno.start();
 
     }
@@ -162,13 +163,16 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         defaultValue.add(Eurl.FRANCE24.name());
         Set<String> preferencesValues = this.preferences.getStringSet("configuracion", defaultValue);
         List<Eurl> listaURL = new ArrayList<>();
+
         for (String url : preferencesValues) {
             listaURL.add(Eurl.valueOf(url));
+
         }
         return listaURL;
     }
 
     public void guardarPreferencias(List<Eurl> eurl) {
+        refresh.setRefreshing(true);
         SharedPreferences.Editor edit = this.preferences.edit();
         Set<String> urls = new HashSet<>();
         for (Eurl s : eurl) {
@@ -187,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         for (Eurl url : this.rssGuardados) {
 
             this.rss = url.url;
-            ejecutarHilo(TEXTO);
+            ejecutarHilo(TEXTO,url.name().toString());
         }
         this.myAdapter.notifyDataSetChanged();
     }

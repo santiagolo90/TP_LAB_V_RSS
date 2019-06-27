@@ -15,15 +15,17 @@ public class MyHilo extends Thread {
     String url;
     int tipo ;
     int currentIndex;
+    String fuente;
 
-    public MyHilo(Handler handler, String url, int tipo){
+    public MyHilo(Handler handler, String url, int tipo,String fuente){
         this.handler = handler;
         this.url = url;
         this.tipo = tipo;
+        this.fuente = fuente;
     }
 
-    public MyHilo(Handler handler, String url, int tipo, int currentIndex){
-        this(handler, url, tipo);
+    public MyHilo(Handler handler, String url, int tipo,String fuente, int currentIndex){
+        this(handler, url, tipo,fuente);
         this.currentIndex = currentIndex;
     }
 
@@ -33,7 +35,7 @@ public class MyHilo extends Thread {
         mensaje.arg1 = tipo;
         if (this.tipo == MainActivity.TEXTO){
             String respues = myConeccion.conectarseString(url);
-            mensaje.obj = XmlParser.obtenerNoticias(respues);
+            mensaje.obj = XmlParser.obtenerNoticias(respues,this.fuente);
         }else if(this.tipo == MainActivity.IMAGEN) {
             byte[] respues = myConeccion.conectarseImagen(url);
             mensaje.obj = respues;

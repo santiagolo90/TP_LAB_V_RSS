@@ -15,7 +15,7 @@ import java.util.List;
 
 public class XmlParser {
 
-    public static List<Noticia> obtenerNoticias(String xml){
+    public static List<Noticia> obtenerNoticias(String xml,String fuente){
         List<Noticia> noticias = new ArrayList<>();
 
         XmlPullParser xmlPullParser = Xml.newPullParser();
@@ -27,12 +27,15 @@ public class XmlParser {
             while (event != XmlPullParser.END_DOCUMENT){
 
                 if (event == XmlPullParser.START_TAG){
+
                     if ("item".equals(xmlPullParser.getName())){
                         n = new Noticia();
                     }
+
                     if ("title".equals(xmlPullParser.getName()) && n != null){
                         n.setTitulo(xmlPullParser.nextText());
                     }
+
                     if ("link".equals(xmlPullParser.getName())&& n != null){
                         n.setLink(xmlPullParser.nextText());
                     }
@@ -48,9 +51,16 @@ public class XmlParser {
                         n.setFecha(xmlPullParser.nextText());
 
                     }
+
+                    if (n != null){
+                        n.setFuente(fuente);
+                    }
+                    /*
                     if ("creator".equals(xmlPullParser.getName())&& n != null){
                         n.setFuente(xmlPullParser.nextText());
+                        n.setFuente(fuente);
                     }
+                    */
                 }
                 if (event == XmlPullParser.END_TAG){
                     if ("item".equals(xmlPullParser.getName()) && n != null) {
